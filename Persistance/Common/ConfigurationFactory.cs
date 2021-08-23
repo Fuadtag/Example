@@ -1,3 +1,4 @@
+using System;
 using Domain.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -26,12 +27,12 @@ namespace Persistance.Common
             builder.Property(e => e.CreatedBy).IsRequired();
             builder.Property(e => e.CreatedAt).IsRequired()
                 .ValueGeneratedOnAdd()
-                .HasDefaultValueSql("now() AT TIME ZONE 'UTC'");
+                .HasDefaultValue(DateTime.Now);
 
             builder.Property(e => e.LastModifiedBy).IsRequired();
             builder.Property(e => e.LastModifiedAt).IsRequired()
                 .ValueGeneratedOnAdd()
-                .HasDefaultValueSql("now() AT TIME ZONE 'UTC'");
+                .HasDefaultValue(DateTime.Now);
 
             return builder;
         }

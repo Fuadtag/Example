@@ -1,4 +1,5 @@
 using System.Reflection;
+using App.Products;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace App
@@ -9,6 +10,8 @@ namespace App
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
+
+            services.AddScoped<IProductService, ProductService>();
             return services;
         }
     }

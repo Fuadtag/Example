@@ -1,4 +1,5 @@
 using App;
+using FluentValidation.AspNetCore;
 using Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Persistance;
+using WebApi.Injections;
 using WebApi.Middlewares;
 
 namespace WebApi
@@ -39,8 +41,11 @@ namespace WebApi
             services.AddInfrastructure();
             services.AddPersistence(Configuration);
             services.AddApp();
+            // services.AddControllers().AddFluentValidation(c => c.RegisterValidatorsFromAssemblyContaining<LoginValidator>());;
             services.AddControllers();
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "Pasha Life Insurance CRM Api", Version = "v1"}); });
+            services.AddApiVersion();
+            services.AddSwagger();
+            // services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "Pasha Life Insurance CRM Api", Version = "v1"}); });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -57,5 +57,11 @@ namespace Persistance
 
             return base.SaveChangesAsync(cancellationToken);
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // make sure PostGIS extension is installed in database
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+            
+        }
     }
 }
