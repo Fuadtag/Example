@@ -1,4 +1,6 @@
 using App;
+using App.Products;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using Infrastructure;
 using Microsoft.AspNetCore.Builder;
@@ -6,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
+using MicroElements.Swashbuckle.FluentValidation;
 using Persistance;
 using WebApi.Injections;
 using WebApi.Middlewares;
@@ -41,7 +43,15 @@ namespace WebApi
             services.AddInfrastructure();
             services.AddPersistence(Configuration);
             services.AddApp();
-            // services.AddControllers().AddFluentValidation(c => c.RegisterValidatorsFromAssemblyContaining<LoginValidator>());;
+            services.AddControllers().AddFluentValidation(c=>
+                {
+                    c.RegisterValidatorsFromAssemblyContaining(typeof(ProductResource.ProductResourceValidator))
+                        .AutomaticValidationEnabled = true;
+                    // Optionally set validator factory if you have problems with scope resolve inside validators.
+                    c.ValidatorFactoryType = typeof(HttpContextServiceProviderValidatorFactory);
+                    c.ValidatorOptions.CascadeMode = CascadeMode.Stop;
+                }
+            );
             services.AddControllers();
             services.AddApiVersion();
             services.AddSwagger();
